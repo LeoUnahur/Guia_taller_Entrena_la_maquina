@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Taller de IA para estudiantes · UNAHUR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F4F7F9;--surface:#FFFFFF;--ink:#17222D;--muted:#53616F;--line:#D5DEE6;--accent:#0B6E7A;--accent-ink:#FFFFFF;--soft:#E3F0F2;--green:#2F8F5B;--amber:#C98A00;--red:#C23B2E;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F171E;--surface:#17222B;--ink:#E8EEF3;--muted:#9AA9B6;--line:#2A3844;--accent:#5CC0CC;--accent-ink:#06242A;--soft:#17303A;--green:#58C088;--amber:#E6B544;--red:#EE7A6E}}
+:root[data-theme="dark"]{--bg:#0F171E;--surface:#17222B;--ink:#E8EEF3;--muted:#9AA9B6;--line:#2A3844;--accent:#5CC0CC;--accent-ink:#06242A;--soft:#17303A;--green:#58C088;--amber:#E6B544;--red:#EE7A6E}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 1rem);-webkit-text-size-adjust:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:1.0625rem;line-height:1.55}
+.wrap{max-width:42rem;margin:0 auto;padding:1.5rem 1.25rem 4rem}
+h1{font-size:clamp(1.9rem,7vw,2.7rem);line-height:1.1;margin:.5rem 0 .75rem;letter-spacing:-.01em}
+h2{font-size:1.45rem;line-height:1.2;margin:0 0 .75rem}
+h3{font-size:1.05rem;margin:1.25rem 0 .4rem}
+p{margin:.5rem 0}
+.lead{color:var(--muted);font-size:1.15rem;max-width:34rem}
+nav ul{list-style:none;display:flex;flex-wrap:wrap;gap:.5rem;padding:0;margin:1.25rem 0 0}
+nav a{display:inline-block;padding:.45rem .85rem;border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;background:var(--surface);font-size:.95rem}
+nav a:hover{border-color:var(--accent);color:var(--accent)}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+section{margin-top:2.75rem;padding-top:1.75rem;border-top:1px solid var(--line)}
+.formula{display:flex;flex-wrap:wrap;gap:.4rem;margin:.75rem 0;padding:0;list-style:none}
+.formula li{background:var(--soft);color:var(--accent);padding:.3rem .7rem;border-radius:.5rem;font-weight:700}
+.pair{display:grid;gap:.75rem;margin:1rem 0}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:.6rem;padding:.85rem 1rem}
+.box b{display:block;margin-bottom:.25rem}
+.prompt{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:.4rem;padding:.8rem 1rem;margin:.75rem 0}
+.prompt p{margin:0 0 .6rem}
+.prompt small{display:block;color:var(--muted);margin-bottom:.4rem}
+button{font:inherit;font-weight:700;min-height:2.75rem;padding:.4rem 1.1rem;border:0;border-radius:.5rem;background:var(--accent);color:var(--accent-ink);cursor:pointer}
+button.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn{display:inline-block;min-height:2.75rem;padding:.7rem 1.2rem;border-radius:.5rem;background:var(--accent);color:var(--accent-ink);font-weight:700;text-decoration:none}
+pre{white-space:pre-wrap;word-wrap:break-word;overflow-wrap:anywhere;background:var(--surface);border:1px solid var(--line);border-radius:.5rem;padding:.85rem 1rem;font:inherit;font-size:.98rem;margin:.6rem 0}
+.case{background:var(--surface);border:1px solid var(--line);border-radius:.6rem;padding:.85rem 1rem;margin:.75rem 0}
+.case b{color:var(--accent)}
+.sema{list-style:none;padding:0;margin:1rem 0;display:grid;gap:.5rem}
+.sema li{background:var(--surface);border:1px solid var(--line);border-left-width:8px;border-radius:.4rem;padding:.6rem .9rem}
+.sema .g{border-left-color:var(--green)}.sema .y{border-left-color:var(--amber)}.sema .r{border-left-color:var(--red)}
+.sema b{display:block}
+ol.steps{padding-left:1.25rem}ol.steps li{margin:.5rem 0}
+.week{background:var(--surface);border:1px solid var(--line);border-radius:.6rem;padding:.75rem 1rem;margin:.6rem 0}
+.week p{margin:0 0 .4rem}
+.days{display:flex;gap:.3rem;flex-wrap:wrap}
+.days label{display:flex;flex-direction:column;align-items:center;font-size:.85rem;color:var(--muted);min-width:2.5rem;min-height:2.75rem;justify-content:center}
+input[type=checkbox]{width:1.4rem;height:1.4rem;accent-color:var(--accent);margin:0}
+.check{display:flex;gap:.75rem;align-items:flex-start;margin:.6rem 0}
+.check input{margin-top:.15rem;flex:none}
+.note{color:var(--muted);font-size:.95rem}
+footer{margin-top:3rem;color:var(--muted);font-size:.95rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>Taller de IA para estudiantes</h1>
+<p class="lead">Todo el material del taller, para usar desde el celular y volver a consultar cuando quieras.</p>
+<nav aria-label="Contenido"><ul>
+<li><a href="#encuesta">Encuesta</a></li>
+<li><a href="#prompts">Prompts</a></li>
+<li><a href="#verificar">Verificar</a></li>
+<li><a href="#errores">Cacería de errores</a></li>
+<li><a href="#semaforo">Semáforo</a></li>
+<li><a href="#habito">Bitácora</a></li>
+<li><a href="#compromiso">Compromiso</a></li>
+</ul></nav>
+</header>
+
+<section id="encuesta">
+<h2>Encuesta de apertura</h2>
+<p>Respondé unas preguntas rápidas sobre cómo usás la IA hoy. Al final del taller volvemos sobre los resultados.</p>
+<p><a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSdzTcBsd25ryP1jUppXVKCtNdt0VNgSl-yYV3GOjDbaLygHeg/viewform" target="_blank" rel="noopener">Responder la encuesta</a></p>
+</section>
+
+<section id="prompts">
+<h2>Armá mejores prompts</h2>
+<p>Un buen prompt tiene cinco partes. Si la primera respuesta no sirve, afiná el prompt en lugar de abandonar.</p>
+<ul class="formula"><li>Rol</li><li>Contexto</li><li>Tarea</li><li>Formato</li><li>Límites</li></ul>
+<div class="pair">
+<div class="box"><b>Prompt vago</b>«Explicame la hipertensión.»</div>
+<div class="box"><b>Prompt bien armado</b>«Sos tutor de primer año de Enfermería. Estudio hipertensión arterial para un parcial y conozco lo básico de la circulación. Explicala en 150 palabras con una analogía cotidiana y después hacéme 2 preguntas para chequear si entendí. No me des las respuestas hasta que conteste.»</div>
+</div>
+<h3>Prompts para copiar</h3>
+<p class="note">Reemplazá lo que está entre corchetes con tu tema.</p>
+<div class="prompt"><small>Entender un concepto</small><p id="p1">Explicame [concepto] como si estuviera en primer año de [carrera], con un ejemplo cotidiano. Después hacéme 2 preguntas para ver si entendí.</p><button data-copy="p1">Copiar</button></div>
+<div class="prompt"><small>Resumir un texto</small><p id="p2">Resumí este texto en 5 ideas principales y marcá qué partes quedan poco claras o incompletas.</p><button data-copy="p2">Copiar</button></div>
+<div class="prompt"><small>Practicar</small><p id="p3">Hacéme 5 preguntas tipo parcial sobre [tema], de a una. Esperá mi respuesta, corregila, explicá mi error y recién después seguí con la siguiente. Buscá mis errores, no me elogies.</p><button data-copy="p3">Copiar</button></div>
+<div class="prompt"><small>Planificar</small><p id="p4">Rindo [materia] el [fecha], tengo [X] horas por día y no domino [temas]. Armá un cronograma con repasos espaciados y un día de simulacro.</p><button data-copy="p4">Copiar</button></div>
+<div class="prompt"><small>Entender de verdad</small><p id="p5">No me expliques: guiame con preguntas hasta que llegue solo/a a la respuesta.</p><button data-copy="p5">Copiar</button></div>
+<div class="prompt"><small>Chequear si sé</small><p id="p6">Voy a explicarte [tema] como si fueras un alumno de secundaria. Marcá mis errores y huecos, pero no me des la explicación completa.</p><button data-copy="p6">Copiar</button></div>
+<div class="prompt"><small>Verificar</small><p id="p7">¿En qué fuentes se apoya esta respuesta? Dame autores o títulos para que los pueda comprobar.</p><button data-copy="p7">Copiar</button></div>
+</section>
+
+<section id="verificar">
+<h2>Cómo verificar lo que responde una IA</h2>
+<p>Una IA genera texto verosímil, no consulta una base de hechos comprobados. Por eso, antes de usar una respuesta:</p>
+<ol class="steps">
+<li><b>Contrastá</b> con tu apunte, la bibliografía de la cátedra o un material confiable.</li>
+<li><b>Pedí fuentes y comprobá que existan.</b> Puede inventar citas, autores y títulos que parecen reales.</li>
+<li><b>Probá con un caso:</b> hacé el cálculo o aplicá la idea a un ejemplo. Si falla, desconfiá.</li>
+</ol>
+<p><b>Señales de alerta:</b> datos muy precisos sin fuente, citas textuales «exactas», respuestas que te dan la razón enseguida y temas locales o recientes, como normativa argentina o resoluciones de tu facultad.</p>
+</section>
+
+<section id="errores">
+<h2>Cacería de errores</h2>
+<p>Cada respuesta de abajo tiene al menos un error. Decidí qué está mal, cómo lo comprobarías y de qué tipo de error se trata: alucinación, cálculo, razonamiento, dato incorrecto, complacencia o sesgo.</p>
+<div class="case"><b>Caso A</b><br>«Según un estudio de García y Pérez (2019), publicado en la Revista Argentina de Neurociencias del Aprendizaje, el 87% de los estudiantes que usan resúmenes mejora su rendimiento en un 40%.»</div>
+<div class="case"><b>Caso B</b><br>«Si lanzás una moneda justa y salió cara 5 veces seguidas, es más probable que en el próximo lanzamiento salga seca, porque las caras y las secas tienen que equilibrarse.»</div>
+<div class="case"><b>Caso C</b><br>«La Declaración de la Independencia argentina se firmó el 25 de mayo de 1810 en Buenos Aires.»</div>
+<div class="case"><b>Caso D</b><br>«Una tarjeta que cobra 5% de interés mensual compuesto equivale a un 60% anual, porque 5% × 12 = 60%.»</div>
+<div class="case"><b>Caso E</b><br>Pregunta: «Creo que 0,999… (infinitos nueves) es un poco menos que 1, ¿verdad?»<br>Respuesta: «¡Excelente observación, tenés toda la razón! Siempre queda una diferencia mínima.»</div>
+<p class="note">Los casos fueron armados para el taller: si buscás la cita del caso A, no la vas a encontrar. Las soluciones se publican en esta página después del taller.</p>
+</section>
+
+<section id="semaforo">
+<h2>Semáforo de uso responsable</h2>
+<ul class="sema">
+<li class="g"><b>Verde</b>Explicar, practicar, preguntar, planificar, buscar tus propios errores. Verificá lo que responde.</li>
+<li class="y"><b>Amarillo</b>Resumir, mejorar redacción, generar ideas. Consultá qué permite cada cátedra y declará el uso.</li>
+<li class="r"><b>Rojo</b>Entregar como propio un trabajo hecho por IA, inventar citas, subir datos personales o confidenciales.</li>
+</ul>
+<h3>¿Qué color le pondrías a cada situación?</h3>
+<ol class="steps">
+<li>Le pedís a la IA que escriba tu trabajo práctico y cambiás algunas palabras.</li>
+<li>Pegás en un chatbot los datos de un caso real de tu práctica profesional, con nombres, para que te ayude a redactar el informe.</li>
+<li>Usás la IA para corregir la ortografía y la redacción de tu texto y no se lo contás a nadie.</li>
+<li>Usás la IA para que te tome preguntas de práctica antes de un parcial.</li>
+<li>La IA te da una cita bibliográfica y la copiás en tu trabajo sin buscar el libro.</li>
+</ol>
+</section>
+
+<section id="habito">
+<h2>Tu bitácora de 4 semanas</h2>
+<p>Un hábito se arma con repetición y registro. Empezá con un disparador fijo: una situación concreta que te recuerde usar la IA para estudiar.</p>
+<pre id="t1">Cuando [situación, por ejemplo: termino de leer un apunte], voy a [acción, por ejemplo: pedirle 5 preguntas de práctica a la IA] usando el prompt N° [__].</pre>
+<button class="ghost" data-copy="t1">Copiar disparador</button>
+<h3>Registro por sesión</h3>
+<p class="note">Pegalo en tus notas y completalo después de cada sesión de estudio con IA.</p>
+<pre id="t2">Fecha y duración:
+Materia y tema:
+¿Qué quería lograr?
+Prompt que usé:
+Tipo de uso (explicar / esquematizar / practicar / planificar):
+¿Qué verifiqué y cómo?
+¿Encontré un error o dato dudoso?
+Lo que aprendí, con mis palabras y sin mirar:
+Semáforo (verde / amarillo / rojo):
+Cómo mejoraría el prompt la próxima vez:</pre>
+<button class="ghost" data-copy="t2">Copiar registro</button>
+<h3>Tablero de 4 semanas</h3>
+<p class="note">Tildá los días en que estudiaste con IA. La meta es 3 sesiones por semana. Se guarda en este navegador.</p>
+<div id="board"></div>
+</section>
+
+<section id="compromiso">
+<h2>Compromiso de uso responsable</h2>
+<div class="check"><input type="checkbox" id="c1" data-k="c1"><label for="c1">Verifico lo importante antes de usarlo.</label></div>
+<div class="check"><input type="checkbox" id="c2" data-k="c2"><label for="c2">Declaro el uso de IA cuando la cátedra lo pide o cuando corresponde.</label></div>
+<div class="check"><input type="checkbox" id="c3" data-k="c3"><label for="c3">No subo datos personales ni confidenciales, míos o de otras personas.</label></div>
+<div class="check"><input type="checkbox" id="c4" data-k="c4"><label for="c4">Uso la IA para pensar mejor, no para pensar menos.</label></div>
+<div class="check"><input type="checkbox" id="c5" data-k="c5"><label for="c5">Pregunto a mi docente cuando no sé si un uso está permitido.</label></div>
+<h3>Plantilla para declarar el uso de IA</h3>
+<pre id="t3">Herramienta y fecha:
+Para qué la usé:
+Qué verifiqué y con qué fuente:
+Qué parte del trabajo es mía:</pre>
+<button class="ghost" data-copy="t3">Copiar plantilla</button>
+</section>
+
+<footer>Taller de Inteligencia Artificial · UNAHUR</footer>
+</div>
+
+<script>
+(function(){
+function fallback(t,done){var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy');done()}catch(e){}document.body.removeChild(a)}
+document.querySelectorAll('[data-copy]').forEach(function(b){
+b.addEventListener('click',function(){
+var t=document.getElementById(b.dataset.copy).innerText,o=b.textContent;
+var done=function(){b.textContent='Copiado';setTimeout(function(){b.textContent=o},1600)};
+try{navigator.clipboard.writeText(t).then(done,function(){fallback(t,done)})}catch(e){fallback(t,done)}
+})});
+var focus=['Explorar: probá los 4 usos con tu propio material','Practicar: pedí preguntas en cada sesión','Verificar: aplicá Contrastar, Pedir fuentes y Probar en cada sesión','Autonomía: armá tus prompts sin mirar la ficha'];
+var days=['L','M','X','J','V','S','D'],board=document.getElementById('board'),h='';
+focus.forEach(function(f,i){
+h+='<div class="week"><p><b>Semana '+(i+1)+'.</b> '+f+'</p><div class="days">';
+days.forEach(function(d,j){var k='w'+i+'d'+j;h+='<label for="'+k+'">'+d+'<input type="checkbox" id="'+k+'" data-k="'+k+'"></label>'});
+h+='</div></div>'});
+board.innerHTML=h;
+document.querySelectorAll('input[data-k]').forEach(function(c){
+try{c.checked=localStorage.getItem('taller-ia-'+c.dataset.k)==='1'}catch(e){}
+c.addEventListener('change',function(){try{localStorage.setItem('taller-ia-'+c.dataset.k,c.checked?'1':'0')}catch(e){}})});
+})();
+</script>
+</body>
+</html>
