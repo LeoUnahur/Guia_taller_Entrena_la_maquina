@@ -37,6 +37,9 @@ button{font:inherit;font-weight:700;min-height:2.75rem;padding:.4rem 1.1rem;bord
 button.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
 .btn{display:inline-block;min-height:2.75rem;padding:.7rem 1.2rem;border-radius:.5rem;background:var(--accent);color:var(--accent-ink);font-weight:700;text-decoration:none}
 .btn.alt{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.top{margin:1.5rem 0 0}
+.top a{display:inline-block;padding:.5rem .95rem;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--accent);font-size:.95rem;text-decoration:none}
+.top a:hover{border-color:var(--accent)}
 pre{white-space:pre-wrap;word-wrap:break-word;overflow-wrap:anywhere;background:var(--surface);border:1px solid var(--line);border-radius:.5rem;padding:.85rem 1rem;font:inherit;font-size:.98rem;margin:.6rem 0}
 .case{background:var(--surface);border:1px solid var(--line);border-radius:.6rem;padding:.85rem 1rem;margin:.75rem 0}
 .case b{color:var(--accent)}
@@ -58,7 +61,7 @@ footer{margin-top:3rem;color:var(--muted);font-size:.95rem}
 </head>
 <body>
 <div class="wrap">
-<header>
+<header id="indice">
 <h1>Taller de IA para estudiantes</h1>
 <p class="lead">Todo el material del taller, para usar desde el celular y volver a consultar cuando quieras.</p>
 <nav aria-label="Contenido"><ul>
@@ -79,6 +82,7 @@ footer{margin-top:3rem;color:var(--muted);font-size:.95rem}
 <p><a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSdzTcBsd25ryP1jUppXVKCtNdt0VNgSl-yYV3GOjDbaLygHeg/viewform" target="_blank" rel="noopener">Responder la encuesta</a></p>
 <p><a class="btn alt" href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ-OKHHllnkFvMAGZhtXwhXKemd8yMmy63PRstlL3BQ6Qmgzf4lVS49y6_wOeA9XqLibXp_NPbtG1aH/pubhtml?gid=343605443&single=true" target="_blank" rel="noopener">Ver resultados en vivo</a></p>
 <p class="note">Los resultados se actualizan a medida que llegan las respuestas y pueden tardar unos minutos en reflejarse.</p>
+<p class="top"><a href="#indice">↑ Volver al índice</a></p>
 </section>
 
 <section id="objetivos">
@@ -91,6 +95,7 @@ footer{margin-top:3rem;color:var(--muted);font-size:.95rem}
 <li>Entender que la IA aprende de datos, y por qué datos incompletos o sesgados producen errores.</li>
 <li>Empezar un hábito de uso con un disparador fijo y una bitácora de 4 semanas.</li>
 </ol>
+<p class="top"><a href="#indice">↑ Volver al índice</a></p>
 </section>
 
 <section id="prompts">
@@ -110,6 +115,7 @@ footer{margin-top:3rem;color:var(--muted);font-size:.95rem}
 <div class="prompt"><small>Entender de verdad</small><p id="p5">No me expliques: guiame con preguntas hasta que llegue solo/a a la respuesta.</p><button data-copy="p5">Copiar</button></div>
 <div class="prompt"><small>Chequear si sé</small><p id="p6">Voy a explicarte [tema] como si fueras un alumno de secundaria. Marcá mis errores y huecos, pero no me des la explicación completa.</p><button data-copy="p6">Copiar</button></div>
 <div class="prompt"><small>Verificar</small><p id="p7">¿En qué fuentes se apoya esta respuesta? Dame autores o títulos para que los pueda comprobar.</p><button data-copy="p7">Copiar</button></div>
+<p class="top"><a href="#indice">↑ Volver al índice</a></p>
 </section>
 
 <section id="verificar">
@@ -121,6 +127,7 @@ footer{margin-top:3rem;color:var(--muted);font-size:.95rem}
 <li><b>Probá con un caso:</b> hacé el cálculo o aplicá la idea a un ejemplo. Si falla, desconfiá.</li>
 </ol>
 <p><b>Señales de alerta:</b> datos muy precisos sin fuente, citas textuales «exactas», respuestas que te dan la razón enseguida y temas locales o recientes, como normativa argentina o resoluciones de tu facultad.</p>
+<p class="top"><a href="#indice">↑ Volver al índice</a></p>
 </section>
 
 <section id="errores">
@@ -132,6 +139,7 @@ footer{margin-top:3rem;color:var(--muted);font-size:.95rem}
 <div class="case"><b>Caso D</b><br>«Una tarjeta que cobra 5% de interés mensual compuesto equivale a un 60% anual, porque 5% × 12 = 60%.»</div>
 <div class="case"><b>Caso E</b><br>Pregunta: «Creo que 0,999… (infinitos nueves) es un poco menos que 1, ¿verdad?»<br>Respuesta: «¡Excelente observación, tenés toda la razón! Siempre queda una diferencia mínima.»</div>
 <p class="note">Los casos fueron armados para el taller: si buscás la cita del caso A, no la vas a encontrar. Las soluciones se publican en esta página después del taller.</p>
+<p class="top"><a href="#indice">↑ Volver al índice</a></p>
 </section>
 
 <section id="semaforo">
@@ -149,6 +157,7 @@ footer{margin-top:3rem;color:var(--muted);font-size:.95rem}
 <li>Usás la IA para que te tome preguntas de práctica antes de un parcial.</li>
 <li>La IA te da una cita bibliográfica y la copiás en tu trabajo sin buscar el libro.</li>
 </ol>
+<p class="top"><a href="#indice">↑ Volver al índice</a></p>
 </section>
 
 <section id="habito">
@@ -172,6 +181,7 @@ Cómo mejoraría el prompt la próxima vez:</pre>
 <h3>Tablero de 4 semanas</h3>
 <p class="note">Tildá los días en que estudiaste con IA. La meta es 3 sesiones por semana. Se guarda en este navegador.</p>
 <div id="board"></div>
+<p class="top"><a href="#indice">↑ Volver al índice</a></p>
 </section>
 
 <section id="compromiso">
@@ -187,6 +197,7 @@ Para qué la usé:
 Qué verifiqué y con qué fuente:
 Qué parte del trabajo es mía:</pre>
 <button class="ghost" data-copy="t3">Copiar plantilla</button>
+<p class="top"><a href="#indice">↑ Volver al índice</a></p>
 </section>
 
 <footer>Taller de Inteligencia Artificial · UNAHUR</footer>
