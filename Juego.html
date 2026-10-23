@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Entrená a la máquina · Taller de IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F4F7F9;--surface:#FFFFFF;--ink:#17222D;--muted:#53616F;--line:#D5DEE6;--accent:#0B6E7A;--accent-ink:#FFFFFF;--soft:#E3F0F2;--imp:#0B6E7A;--spm:#B4570B;--good:#2F8F5B;--bad:#C23B2E;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F171E;--surface:#17222B;--ink:#E8EEF3;--muted:#9AA9B6;--line:#2A3844;--accent:#5CC0CC;--accent-ink:#06242A;--soft:#17303A;--imp:#5CC0CC;--spm:#EBA25C;--good:#58C088;--bad:#EE7A6E}}
+:root[data-theme="dark"]{--bg:#0F171E;--surface:#17222B;--ink:#E8EEF3;--muted:#9AA9B6;--line:#2A3844;--accent:#5CC0CC;--accent-ink:#06242A;--soft:#17303A;--imp:#5CC0CC;--spm:#EBA25C;--good:#58C088;--bad:#EE7A6E}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 1rem);-webkit-text-size-adjust:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:1.0625rem;line-height:1.5}
+.wrap{max-width:60rem;margin:0 auto;padding:1.5rem 1.25rem 4rem}
+h1{font-size:clamp(1.9rem,6vw,2.6rem);line-height:1.1;margin:.5rem 0 .6rem}
+h2{font-size:1.4rem;margin:0 0 .6rem}
+h3{font-size:1.02rem;margin:.2rem 0 .3rem}
+p{margin:.4rem 0}
+.lead{color:var(--muted);max-width:40rem}
+.back{color:var(--accent);text-decoration:none}
+section{margin-top:2.25rem;padding-top:1.5rem;border-top:1px solid var(--line)}
+[hidden]{display:none!important}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
+.chip{font:inherit;min-width:2.75rem;min-height:2.75rem;padding:.3rem .8rem;border:1px solid var(--line);border-radius:.5rem;background:var(--surface);color:var(--ink);cursor:pointer}
+.chip.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:.75rem}
+.card{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--line);border-radius:.5rem;padding:.7rem .9rem;margin:0;min-width:0}
+.card.imp{border-left-color:var(--imp)}.card.spm{border-left-color:var(--spm)}
+.card small{color:var(--muted)}
+.tag{display:inline-block;font-size:.85rem;font-weight:700;padding:.1rem .5rem;border-radius:.4rem;background:var(--soft)}
+.imp .tag{color:var(--imp)}.spm .tag{color:var(--spm)}
+legend{padding:0}
+fieldset.card{display:block}
+.opt{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.4rem}
+.opt label{display:flex;align-items:center;gap:.4rem;min-height:2.75rem}
+input[type=radio]{width:1.25rem;height:1.25rem;accent-color:var(--accent)}
+input[type=text],textarea,select{font:inherit;width:100%;padding:.55rem .7rem;border:1px solid var(--line);border-radius:.45rem;background:var(--surface);color:var(--ink)}
+.rule{background:var(--surface);border:1px solid var(--line);border-radius:.5rem;padding:.8rem 1rem;margin:.7rem 0}
+.row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin:.5rem 0}
+.row input{width:12rem}
+button.go,.btn{display:inline-block;font:inherit;font-weight:700;min-height:2.75rem;padding:.55rem 1.2rem;border:0;border-radius:.5rem;background:var(--accent);color:var(--accent-ink);cursor:pointer;text-decoration:none}
+.note{color:var(--muted);font-size:.95rem}
+.res{background:var(--soft);border-radius:.5rem;padding:.8rem 1rem;margin:.6rem 0}
+.res ul{margin:.3rem 0;padding-left:1.1rem}
+.ok{color:var(--good)}.no{color:var(--bad)}
+.msg{color:var(--bad);font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="back" href="https://claude.ai/artifact/NAnM47afzvnzdef9PHvGBv">← Volver a la guía del taller</a>
+<h1>Entrená a la máquina</h1>
+<p class="lead">Ustedes son el algoritmo: solo pueden aprender de las tarjetas de su mazo. Deduzcan reglas para decidir si un mail es <b>Importante</b> o <b>Spam</b>. Trabajen en grupo, con una sola computadora, y no muestren su mazo a otros grupos.</p>
+
+<section id="s1">
+<h2>1. Elegí el número de tu grupo</h2>
+<div class="chips" id="groups"></div>
+</section>
+
+<div id="main" hidden>
+<section>
+<h2>2. Su mazo de 12 tarjetas</h2>
+<p class="note">Cada tarjeta es un mail ya clasificado. Busquen qué tienen en común los Importante y los Spam.</p>
+<div class="chips" id="filters"><button class="chip on" data-f="*">Todas</button><button class="chip" data-f="I">Importante</button><button class="chip" data-f="S">Spam</button></div>
+<div class="grid" id="deck"></div>
+</section>
+
+<section>
+<h2>3. Sus reglas</h2>
+<p class="note">Escriban 2 o 3 reglas para decidir si un mail es Importante o Spam, y marquen en qué tarjetas se apoya cada una.</p>
+<div id="rules"></div>
+</section>
+
+<section>
+<h2>4. Clasifiquen estos mails nuevos</h2>
+<p class="note">Usen solo las reglas que escribieron arriba.</p>
+<div class="grid" id="tests"></div>
+</section>
+
+<section>
+<h2>5. Corrección</h2>
+<p class="note">Cuando quien conduce lo indique, escribí el código que te dé.</p>
+<div class="row"><input type="text" id="code1" placeholder="Código" autocomplete="off"><button class="go" id="ok1" type="button">Corregir</button></div>
+<p class="msg" id="m1" hidden>Código incorrecto.</p>
+<div class="res" id="corr" hidden></div>
+</section>
+
+<section>
+<h2>6. Ronda 2</h2>
+<p class="note">Cuando quien conduce lo indique, escribí el segundo código.</p>
+<div class="row"><input type="text" id="code2" placeholder="Código" autocomplete="off"><button class="go" id="ok2" type="button">Revelar</button></div>
+<p class="msg" id="m2" hidden>Código incorrecto.</p>
+<div id="r2" hidden>
+<div class="res" id="revtxt"></div>
+<div id="bBlock" hidden><label for="nuevas"><b>¿Qué tarjetas nuevas agregarían para que su máquina aprenda mejor?</b></label><textarea id="nuevas" rows="3" maxlength="300"></textarea></div>
+<div id="aBlock" hidden><label for="dificil"><b>¿Qué mail de prueba fue el más difícil o ambiguo?</b></label><select id="dificil"><option value="">Elegí una opción</option><option>T1</option><option>T2</option><option>T3</option><option>T4</option><option>T5</option><option>T6</option><option>Ninguna</option></select></div>
+<p><label for="com"><b>¿Qué aprendieron? Una frase del grupo.</b></label><textarea id="com" rows="2" maxlength="300"></textarea></p>
+</div>
+</section>
+
+<section>
+<h2>7. Enviar los resultados</h2>
+<p>Se abre el formulario con los datos de su grupo ya cargados. Solo tienen que apretar <b>Enviar</b>.</p>
+<p class="msg" id="msg" hidden></p>
+<a class="btn" id="send" target="_blank" rel="noopener">Enviar resultados</a>
+</section>
+</div>
+</div>
+
+<script>
+(function(){
+var A=["Cambio de aula para el parcial del jueves|Se informa que el parcial se rinde en el Aula 12. Llevar DNI.|I","¡¡¡GANASTE UN iPHONE!!!|Hacé clic YA para reclamar tu premio. Solo hoy.|S","Entrega del TP: prórroga|Les confirmo que la fecha de entrega se extiende hasta el viernes.|I","70% OFF en todo, última oportunidad|Comprá ahora, el descuento termina en 2 horas.|S","¡Inscripciones a materias abiertas!|Ya podés inscribirte desde el sistema de autogestión hasta el lunes.|I","Tu cuenta será bloqueada|Ingresá tus datos en este enlace para evitarlo.|S","Cumple de la abuela|No te olvides de que el domingo almorzamos todos juntos.|I","Mirá lo que te espera en tu carrito|Tenés productos esperando. Volvé y comprá con envío gratis.|S","Vence tu préstamo de biblioteca|El libro de Estadística vence mañana. Podés renovarlo online.|I","Duplicá tu dinero sin riesgo|Invertí hoy y recibí ganancias garantizadas.|S","Apuntes de la clase|Te paso las fotos del pizarrón de la clase que te perdiste.|I","Viajá a Brasil, paquetes en cuotas|Elegí tu destino y reservá hoy con descuento.|S"];
+var B=["Notificación de cambio de horario|Estimados estudiantes: se comunica que la clase del martes se traslada a las 18 h.|I","¡¡¡GANÁ DINERO FÁCIL YA!!!|¡¡¡HACÉ CLIC AHORA, ES GRATIS!!!|S","Constancia de alumno regular|Estimado/a: adjuntamos la constancia que solicitó.|I","¡¡¡OFERTA IMPERDIBLE SOLO HOY!!!|¡¡¡COMPRÁ YA, STOCK LIMITADO!!!|S","Reunión de cátedra|Se convoca a reunión el miércoles. Cordialmente.|I","¡¡¡FELICITACIONES, SOS EL GANADOR!!!|¡¡¡RECLAMÁ TU PREMIO GRATIS!!!|S","Resultado de examen final|Estimado/a: su calificación ya está cargada en el sistema.|I","¡¡¡ADELGAZÁ 10 KILOS EN 1 SEMANA!!!|¡¡¡PRODUCTO MILAGROSO, PEDILO YA!!!|S","Pago de matrícula confirmado|Se informa la acreditación de su pago. Saludos cordiales.|I","¡¡¡CRÉDITO AL INSTANTE SIN REQUISITOS!!!|¡¡¡SOLICITALO AHORA, SIN COSTO!!!|S","Convocatoria a becas|Estimado/a estudiante: se abre la convocatoria a becas hasta el 30/10.|I","¡¡¡ENTRADAS GRATIS PARA EL RECITAL!!!|¡¡¡ÚLTIMAS 5, NO TE QUEDES AFUERA!!!|S"];
+var T=["¡Hoy se entregan los certificados de finalización!|Pasá por Bedelia de 10 a 16 h con tu DNI.|Importante","Estimado cliente: actualización de su cuenta|Para evitar la suspensión, ingrese su clave en el siguiente enlace.|Spam","GRATIS: taller de IA para estudiantes|Participá este jueves, cupos limitados. Inscribite en la web de la universidad.|Importante","Su paquete está retenido en aduana|Abone una tasa de $5.000 en este enlace para liberarlo.|Spam","Recordatorio: examen mañana a las 9 h|No te olvides del DNI y de la lapicera.|Importante","Descubra las ofertas del mes|Estimado/a: conozca descuentos exclusivos en electrodomésticos.|Spam"];
+var FORM="https://docs.google.com/forms/d/e/1FAIpQLSekqYyH72R9yfY_-8vZWsG_19U9pZqtZySTJT5-gfsWXNWXbw/viewform?usp=pp_url";
+var ID={g:"552277788",m:"136389880",r:["1597366090","1664824373","2102962180"],ev:["1063277182","381863003","1531535061"],t:["1415072081","191335452","1218638658","1965497547","1179865332","1774245956"],nu:"1797859601",di:"859220018",co:"796640687"};
+var CODE1="corregir",CODE2="revelar";
+var s={g:0,rules:["","",""],ev:[[],[],[]],ans:["","","","","",""],c1:0,c2:0,nu:"",di:"",co:""};
+function $(i){return document.getElementById(i)}
+function esc(x){return String(x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
+function load(){try{var x=JSON.parse(localStorage.getItem("juego-ia"));if(x&&x.g)s=x}catch(e){}}
+function save(){try{localStorage.setItem("juego-ia",JSON.stringify(s))}catch(e){}}
+function isA(){return s.g%2===0}
+function deck(){return isA()?A:B}
+function showDeck(f){$("deck").innerHTML=deck().map(function(c,i){var p=c.split("|"),imp=p[2]==="I";if(f!=="*"&&f!==p[2])return"";return'<article class="card '+(imp?"imp":"spm")+'"><small>Tarjeta '+(i+1)+'</small><h3>'+p[0]+'</h3><p>'+p[1]+'</p><span class="tag">'+(imp?"Importante":"Spam")+'</span></article>'}).join("")}
+function rules(){var h="";for(var k=0;k<3;k++){h+='<div class="rule"><label for="r'+k+'"><b>Regla '+(k+1)+(k?"":" (obligatoria)")+'</b></label><input id="r'+k+'" type="text" maxlength="200" value="'+esc(s.rules[k])+'"><p class="note">Tarjetas en las que se apoya:</p><div class="chips evs" data-k="'+k+'">';for(var n=1;n<=12;n++){var on=s.ev[k].indexOf(n)>-1;h+='<button type="button" class="chip'+(on?" on":"")+'" aria-pressed="'+on+'" data-n="'+n+'">'+n+'</button>'}h+="</div></div>"}$("rules").innerHTML=h}
+function tests(){$("tests").innerHTML=T.map(function(c,i){var p=c.split("|");return'<fieldset class="card"><legend><small>Mail T'+(i+1)+'</small></legend><h3>'+p[0]+'</h3><p>'+p[1]+'</p><div class="opt"><label><input type="radio" name="t'+i+'" value="Importante"'+(s.ans[i]==="Importante"?" checked":"")+'> Importante</label><label><input type="radio" name="t'+i+'" value="Spam"'+(s.ans[i]==="Spam"?" checked":"")+'> Spam</label></div></fieldset>'}).join("")}
+function corr(){var el=$("corr");if(!s.c1){el.hidden=true;return}var ok=0,h="";T.forEach(function(c,i){var r=c.split("|")[2],a=s.ans[i],g=a===r;if(g)ok++;h+='<li class="'+(g?"ok":"no")+'">T'+(i+1)+': '+(a||"sin responder")+(g?" — correcto":" — la respuesta era "+r)+'</li>'});el.innerHTML="<h3>Aciertos: "+ok+" de 6</h3><ul>"+h+"</ul>";el.hidden=false}
+function rev(){$("r2").hidden=!s.c2;if(!s.c2)return;$("bBlock").hidden=isA();$("aBlock").hidden=!isA();$("revtxt").innerHTML=isA()?"<b>Su mazo era el A (equilibrado).</b> Tenía casos que contradecían las reglas más simples, y por eso pudieron afinar sus reglas.":"<b>Su mazo era el B (sesgado).</b> Todos los Spam gritaban y todos los Importante eran formales: no había ningún caso que contradijera esa regla. Los datos incompletos producen errores."}
+function build(){$("main").hidden=false;Array.prototype.forEach.call(document.querySelectorAll("[data-g]"),function(b){b.classList.toggle("on",+b.dataset.g===s.g)});showDeck("*");Array.prototype.forEach.call(document.querySelectorAll("#filters .chip"),function(b){b.classList.toggle("on",b.dataset.f==="*")});rules();tests();$("nuevas").value=s.nu;$("dificil").value=s.di;$("com").value=s.co;corr();rev()}
+function url(){var u=FORM,L=isA()?"A":"B";function add(k,v){if(v!==""&&v!=null)u+="&entry."+k+"="+encodeURIComponent(v)}add(ID.g,s.g);add(ID.m,L);for(var k=0;k<3;k++){add(ID.r[k],s.rules[k].slice(0,300));add(ID.ev[k],s.ev[k].slice().sort(function(a,b){return a-b}).map(function(n){return L+n}).join(", "))}T.forEach(function(c,i){add(ID.t[i],s.ans[i])});add(ID.nu,s.nu.slice(0,300));add(ID.di,s.di);add(ID.co,s.co.slice(0,300));return u}
+var g=$("groups"),h="";for(var i=1;i<=20;i++)h+='<button type="button" class="chip" data-g="'+i+'">'+i+'</button>';g.innerHTML=h;
+document.addEventListener("click",function(e){var t=e.target;if(t.dataset&&t.dataset.g){s.g=+t.dataset.g;save();build();return}
+if(t.dataset&&t.dataset.f){Array.prototype.forEach.call(document.querySelectorAll("#filters .chip"),function(b){b.classList.toggle("on",b===t)});showDeck(t.dataset.f);return}
+if(t.dataset&&t.dataset.n&&t.parentNode.dataset.k!==undefined){var k=+t.parentNode.dataset.k,n=+t.dataset.n,ix=s.ev[k].indexOf(n);if(ix>-1)s.ev[k].splice(ix,1);else s.ev[k].push(n);t.classList.toggle("on",ix<0);t.setAttribute("aria-pressed",ix<0);save();return}
+if(t.id==="ok1"){var c=$("code1").value.trim().toLowerCase();$("m1").hidden=c===CODE1;if(c===CODE1){s.c1=1;save();corr()}return}
+if(t.id==="ok2"){var d=$("code2").value.trim().toLowerCase();$("m2").hidden=d===CODE2;if(d===CODE2){s.c2=1;save();rev()}return}
+if(t.id==="send"){var miss=[];if(!s.rules[0].trim())miss.push("la regla 1");if(s.ans.indexOf("")>-1)miss.push("clasificar los 6 mails");var m=$("msg");if(miss.length){e.preventDefault();m.textContent="Antes de enviar falta: "+miss.join(" y ")+".";m.hidden=false;return}m.hidden=true;t.href=url()}});
+document.addEventListener("input",function(e){var t=e.target;if(/^r[0-2]$/.test(t.id)){s.rules[+t.id.charAt(1)]=t.value}else if(t.id==="nuevas")s.nu=t.value;else if(t.id==="com")s.co=t.value;else return;save()});
+document.addEventListener("change",function(e){var t=e.target;if(t.type==="radio"&&/^t[0-5]$/.test(t.name)){s.ans[+t.name.charAt(1)]=t.value;save();if(s.c1)corr()}else if(t.id==="dificil"){s.di=t.value;save()}});
+load();if(s.g)build();
+})();
+</script>
+</body>
+</html>
