@@ -55,6 +55,7 @@ button.go,.btn{display:inline-block;font:inherit;font-weight:700;min-height:2.75
 <a class="back" href="https://leounahur.github.io/Guia_taller_Entrena_la_maquina">← Volver a la guía del taller</a>
 <h1>Entrená a la máquina</h1>
 <p class="lead">Ustedes son el algoritmo: solo pueden aprender de las tarjetas de su mazo. Deduzcan reglas para decidir si un mail es <b>Importante</b> o <b>Spam</b>. Trabajen en grupo, con una sola computadora, y no muestren su mazo a otros grupos.</p>
+<p class="note">Código de este equipo: <b id="eq"></b></p>
 
 <section id="s1">
 <h2>1. Elegí el número de tu grupo</h2>
@@ -119,6 +120,8 @@ var T=["¡Hoy se entregan los certificados de finalización!|Pasá por Bedelia d
 var FORM="https://docs.google.com/forms/d/e/1FAIpQLSekqYyH72R9yfY_-8vZWsG_19U9pZqtZySTJT5-gfsWXNWXbw/viewform?usp=pp_url";
 var ID={g:"552277788",m:"136389880",r:["1597366090","1664824373","2102962180"],ev:["1063277182","381863003","1531535061"],t:["1415072081","191335452","1218638658","1965497547","1179865332","1774245956"],nu:"1797859601",di:"859220018",co:"796640687"};
 var CODE1="corregir",CODE2="revelar";
+var EQ="";try{EQ=localStorage.getItem("juego-ia-eq")||""}catch(e){}
+if(!EQ){var al="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";for(var q=0;q<4;q++)EQ+=al.charAt(Math.floor(Math.random()*al.length));try{localStorage.setItem("juego-ia-eq",EQ)}catch(e){}}
 var s={g:0,rules:["","",""],ev:[[],[],[]],ans:["","","","","",""],c1:0,c2:0,nu:"",di:"",co:""};
 function $(i){return document.getElementById(i)}
 function esc(x){return String(x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
@@ -132,7 +135,7 @@ function tests(){$("tests").innerHTML=T.map(function(c,i){var p=c.split("|");ret
 function corr(){var el=$("corr");if(!s.c1){el.hidden=true;return}var ok=0,h="";T.forEach(function(c,i){var r=c.split("|")[2],a=s.ans[i],g=a===r;if(g)ok++;h+='<li class="'+(g?"ok":"no")+'">T'+(i+1)+': '+(a||"sin responder")+(g?" — correcto":" — la respuesta era "+r)+'</li>'});el.innerHTML="<h3>Aciertos: "+ok+" de 6</h3><ul>"+h+"</ul>";el.hidden=false}
 function rev(){$("ronda2").hidden=!s.c2;if(!s.c2)return;$("bBlock").hidden=isA();$("aBlock").hidden=!isA();$("revtxt").innerHTML=isA()?"<b>Su mazo era el A (equilibrado).</b> Tenía casos que contradecían las reglas más simples, y por eso pudieron afinar sus reglas.":"<b>Su mazo era el B (sesgado).</b> Todos los Spam gritaban y todos los Importante eran formales: no había ningún caso que contradijera esa regla. Los datos incompletos producen errores."}
 function build(){$("main").hidden=false;Array.prototype.forEach.call(document.querySelectorAll("[data-g]"),function(b){b.classList.toggle("on",+b.dataset.g===s.g)});showDeck("*");Array.prototype.forEach.call(document.querySelectorAll("#filters .chip"),function(b){b.classList.toggle("on",b.dataset.f==="*")});rules();tests();$("nuevas").value=s.nu;$("dificil").value=s.di;$("com").value=s.co;corr();rev()}
-function url(){var u=FORM,L=isA()?"A":"B";function add(k,v){if(v!==""&&v!=null)u+="&entry."+k+"="+encodeURIComponent(v)}add(ID.g,s.g);add(ID.m,L);for(var k=0;k<3;k++){add(ID.r[k],s.rules[k].slice(0,300));add(ID.ev[k],s.ev[k].slice().sort(function(a,b){return a-b}).map(function(n){return L+n}).join(", "))}T.forEach(function(c,i){add(ID.t[i],s.ans[i])});add(ID.nu,s.nu.slice(0,300));add(ID.di,s.di);add(ID.co,s.co.slice(0,300));return u}
+function url(){var u=FORM,L=isA()?"A":"B";function add(k,v){if(v!==""&&v!=null)u+="&entry."+k+"="+encodeURIComponent(v)}add(ID.g,s.g);add(ID.m,L);for(var k=0;k<3;k++){add(ID.r[k],s.rules[k].slice(0,300));add(ID.ev[k],s.ev[k].slice().sort(function(a,b){return a-b}).map(function(n){return L+n}).join(", "))}T.forEach(function(c,i){add(ID.t[i],s.ans[i])});add(ID.nu,s.nu.slice(0,300));add(ID.di,s.di);add(ID.co,("[Equipo "+EQ+"] "+s.co).trim().slice(0,300));return u}
 var g=$("groups"),h="";for(var i=1;i<=20;i++)h+='<button type="button" class="chip" data-g="'+i+'">'+i+'</button>';g.innerHTML=h;
 document.addEventListener("click",function(e){var t=e.target;if(t.dataset&&t.dataset.g){s.g=+t.dataset.g;save();build();return}
 if(t.dataset&&t.dataset.f){Array.prototype.forEach.call(document.querySelectorAll("#filters .chip"),function(b){b.classList.toggle("on",b===t)});showDeck(t.dataset.f);return}
@@ -142,7 +145,7 @@ if(t.id==="ok2"){var d=$("code2").value.trim().toLowerCase();$("m2").hidden=d===
 if(t.id==="send"){var miss=[];if(!s.rules[0].trim())miss.push("la regla 1");if(s.ans.indexOf("")>-1)miss.push("clasificar los 6 mails");var m=$("msg");if(miss.length){e.preventDefault();m.textContent="Antes de enviar falta: "+miss.join(" y ")+".";m.hidden=false;return}m.hidden=true;t.href=url()}});
 document.addEventListener("input",function(e){var t=e.target;if(/^r[0-2]$/.test(t.id)){s.rules[+t.id.charAt(1)]=t.value}else if(t.id==="nuevas")s.nu=t.value;else if(t.id==="com")s.co=t.value;else return;save()});
 document.addEventListener("change",function(e){var t=e.target;if(t.type==="radio"&&/^t[0-5]$/.test(t.name)){s.ans[+t.name.charAt(1)]=t.value;save();if(s.c1)corr()}else if(t.id==="dificil"){s.di=t.value;save()}});
-load();if(s.g)build();
+$("eq").textContent=EQ;load();if(s.g)build();
 })();
 </script>
 </body>
