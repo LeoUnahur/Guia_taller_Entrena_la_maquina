@@ -52,7 +52,7 @@ button.go,.btn{display:inline-block;font:inherit;font-weight:700;min-height:2.75
 </head>
 <body>
 <div class="wrap">
-<a class="back" href="https://leounahur.github.io/Guia_taller_Entrena_la_maquina/">← Volver a la guía del taller</a>
+<a class="back" href="https://claude.ai/artifact/NAnM47afzvnzdef9PHvGBv">← Volver a la guía del taller</a>
 <h1>Entrená a la máquina</h1>
 <p class="lead">Ustedes son el algoritmo: solo pueden aprender de las tarjetas de su mazo. Deduzcan reglas para decidir si un mail es <b>Importante</b> o <b>Spam</b>. Trabajen en grupo, con una sola computadora, y no muestren su mazo a otros grupos.</p>
 
@@ -94,7 +94,7 @@ button.go,.btn{display:inline-block;font:inherit;font-weight:700;min-height:2.75
 <p class="note">Cuando quien conduce lo indique, escribí el segundo código.</p>
 <div class="row"><input type="text" id="code2" placeholder="Código" autocomplete="off"><button class="go" id="ok2" type="button">Revelar</button></div>
 <p class="msg" id="m2" hidden>Código incorrecto.</p>
-<div id="r2" hidden>
+<div id="ronda2" hidden>
 <div class="res" id="revtxt"></div>
 <div id="bBlock" hidden><label for="nuevas"><b>¿Qué tarjetas nuevas agregarían para que su máquina aprenda mejor?</b></label><textarea id="nuevas" rows="3" maxlength="300"></textarea></div>
 <div id="aBlock" hidden><label for="dificil"><b>¿Qué mail de prueba fue el más difícil o ambiguo?</b></label><select id="dificil"><option value="">Elegí una opción</option><option>T1</option><option>T2</option><option>T3</option><option>T4</option><option>T5</option><option>T6</option><option>Ninguna</option></select></div>
@@ -130,7 +130,7 @@ function showDeck(f){$("deck").innerHTML=deck().map(function(c,i){var p=c.split(
 function rules(){var h="";for(var k=0;k<3;k++){h+='<div class="rule"><label for="r'+k+'"><b>Regla '+(k+1)+(k?"":" (obligatoria)")+'</b></label><input id="r'+k+'" type="text" maxlength="200" value="'+esc(s.rules[k])+'"><p class="note">Tarjetas en las que se apoya:</p><div class="chips evs" data-k="'+k+'">';for(var n=1;n<=12;n++){var on=s.ev[k].indexOf(n)>-1;h+='<button type="button" class="chip'+(on?" on":"")+'" aria-pressed="'+on+'" data-n="'+n+'">'+n+'</button>'}h+="</div></div>"}$("rules").innerHTML=h}
 function tests(){$("tests").innerHTML=T.map(function(c,i){var p=c.split("|");return'<fieldset class="card"><legend><small>Mail T'+(i+1)+'</small></legend><h3>'+p[0]+'</h3><p>'+p[1]+'</p><div class="opt"><label><input type="radio" name="t'+i+'" value="Importante"'+(s.ans[i]==="Importante"?" checked":"")+'> Importante</label><label><input type="radio" name="t'+i+'" value="Spam"'+(s.ans[i]==="Spam"?" checked":"")+'> Spam</label></div></fieldset>'}).join("")}
 function corr(){var el=$("corr");if(!s.c1){el.hidden=true;return}var ok=0,h="";T.forEach(function(c,i){var r=c.split("|")[2],a=s.ans[i],g=a===r;if(g)ok++;h+='<li class="'+(g?"ok":"no")+'">T'+(i+1)+': '+(a||"sin responder")+(g?" — correcto":" — la respuesta era "+r)+'</li>'});el.innerHTML="<h3>Aciertos: "+ok+" de 6</h3><ul>"+h+"</ul>";el.hidden=false}
-function rev(){$("r2").hidden=!s.c2;if(!s.c2)return;$("bBlock").hidden=isA();$("aBlock").hidden=!isA();$("revtxt").innerHTML=isA()?"<b>Su mazo era el A (equilibrado).</b> Tenía casos que contradecían las reglas más simples, y por eso pudieron afinar sus reglas.":"<b>Su mazo era el B (sesgado).</b> Todos los Spam gritaban y todos los Importante eran formales: no había ningún caso que contradijera esa regla. Los datos incompletos producen errores."}
+function rev(){$("ronda2").hidden=!s.c2;if(!s.c2)return;$("bBlock").hidden=isA();$("aBlock").hidden=!isA();$("revtxt").innerHTML=isA()?"<b>Su mazo era el A (equilibrado).</b> Tenía casos que contradecían las reglas más simples, y por eso pudieron afinar sus reglas.":"<b>Su mazo era el B (sesgado).</b> Todos los Spam gritaban y todos los Importante eran formales: no había ningún caso que contradijera esa regla. Los datos incompletos producen errores."}
 function build(){$("main").hidden=false;Array.prototype.forEach.call(document.querySelectorAll("[data-g]"),function(b){b.classList.toggle("on",+b.dataset.g===s.g)});showDeck("*");Array.prototype.forEach.call(document.querySelectorAll("#filters .chip"),function(b){b.classList.toggle("on",b.dataset.f==="*")});rules();tests();$("nuevas").value=s.nu;$("dificil").value=s.di;$("com").value=s.co;corr();rev()}
 function url(){var u=FORM,L=isA()?"A":"B";function add(k,v){if(v!==""&&v!=null)u+="&entry."+k+"="+encodeURIComponent(v)}add(ID.g,s.g);add(ID.m,L);for(var k=0;k<3;k++){add(ID.r[k],s.rules[k].slice(0,300));add(ID.ev[k],s.ev[k].slice().sort(function(a,b){return a-b}).map(function(n){return L+n}).join(", "))}T.forEach(function(c,i){add(ID.t[i],s.ans[i])});add(ID.nu,s.nu.slice(0,300));add(ID.di,s.di);add(ID.co,s.co.slice(0,300));return u}
 var g=$("groups"),h="";for(var i=1;i<=20;i++)h+='<button type="button" class="chip" data-g="'+i+'">'+i+'</button>';g.innerHTML=h;
@@ -147,3 +147,4 @@ load();if(s.g)build();
 </script>
 </body>
 </html>
+
